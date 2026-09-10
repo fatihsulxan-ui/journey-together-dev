@@ -1351,17 +1351,6 @@ function ProfilDiyalog({
         <DialogHeader className="text-center">
           <DialogTitle>{t("talebeProfili")}</DialogTitle>
           <DialogDescription>{t("fotoVeKisisel")}</DialogDescription>
-          {hocaModu && (
-            <div className="mt-2 flex justify-center">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onDuzenle(talebe)}
-              >
-                <Pencil className="h-4 w-4" /> Düzenleme
-              </Button>
-            </div>
-          )}
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-3">
