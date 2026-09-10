@@ -1348,25 +1348,20 @@ function ProfilDiyalog({
   return (
     <Dialog open={!!talebe} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <DialogTitle>{t("talebeProfili")}</DialogTitle>
-              <DialogDescription>
-                {t("fotoVeKisisel")}
-              </DialogDescription>
-            </div>
-            {hocaModu && (
+        <DialogHeader className="text-center">
+          <DialogTitle>{t("talebeProfili")}</DialogTitle>
+          <DialogDescription>{t("fotoVeKisisel")}</DialogDescription>
+          {hocaModu && (
+            <div className="mt-2 flex justify-center">
               <Button
                 size="sm"
                 variant="outline"
-                className="shrink-0"
                 onClick={() => onDuzenle(talebe)}
               >
                 <Pencil className="h-4 w-4" /> Düzenleme
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-3">
