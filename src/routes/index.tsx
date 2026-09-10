@@ -1261,21 +1261,25 @@ function TalebeAvatar({
   talebe: Talebe;
   boyut?: number;
 }) {
-  const stil = { width: boyut, height: boyut } as const;
+  const stil = {
+    width: boyut,
+    height: boyut,
+    minWidth: boyut,
+    minHeight: boyut,
+  } as const;
   if (talebe.fotoUrl) {
     return (
       <img
         src={talebe.fotoUrl}
         alt={talebe.isim}
         style={stil}
-        className="rounded-full object-cover ring-1 ring-border"
+        className="shrink-0 rounded-full bg-muted object-cover ring-1 ring-border"
       />
     );
   }
   return (
     <div
-      style={stil}
-      className="inline-flex items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ring-1 ring-primary/20"
+      className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ring-1 ring-border"
       style={{ ...stil, fontSize: Math.max(11, boyut / 3.2) }}
     >
       {bashHarfler(talebe.isim)}
