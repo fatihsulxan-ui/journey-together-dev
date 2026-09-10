@@ -113,6 +113,7 @@ const SOZLUK = {
     hocaefendiGirisi: "Hocaefendi Girişi",
     cikisYap: "Çıkış",
     duzenleme: "Düzenleme modu",
+    duzenle: "Düzenle",
     parola: "Parola",
     ayarlar: "Ayarlar",
     ayarlarAciklama: "Uygulama ayarlarını buradan yönetebilirsiniz.",
