@@ -1261,21 +1261,25 @@ function TalebeAvatar({
   talebe: Talebe;
   boyut?: number;
 }) {
-  const stil = { width: boyut, height: boyut } as const;
+  const stil = {
+    width: boyut,
+    height: boyut,
+    minWidth: boyut,
+    minHeight: boyut,
+  } as const;
   if (talebe.fotoUrl) {
     return (
       <img
         src={talebe.fotoUrl}
         alt={talebe.isim}
         style={stil}
-        className="rounded-full object-cover ring-1 ring-border"
+        className="shrink-0 rounded-full bg-muted object-cover ring-1 ring-border"
       />
     );
   }
   return (
     <div
-      style={stil}
-      className="inline-flex items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ring-1 ring-primary/20"
+      className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary ring-1 ring-border"
       style={{ ...stil, fontSize: Math.max(11, boyut / 3.2) }}
     >
       {bashHarfler(talebe.isim)}
@@ -1361,7 +1365,7 @@ function ProfilDiyalog({
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-3">
-          <div className="relative">
+          <div className="relative h-[120px] w-[120px]">
             <button
               type="button"
               onClick={() => talebe.fotoUrl && setFotoBuyuk(true)}
@@ -1394,24 +1398,29 @@ function ProfilDiyalog({
           </div>
           <div className="text-center">
             <div className="text-lg font-semibold">{talebe.isim}</div>
-            {!kiraatGizli && (
-              <div className="text-xs text-muted-foreground">
-                {t("sayfa")} {talebe.sayfa} · {cuzHesapla(talebe.sayfa)}{t("cuzTam")}
-              </div>
-            )}
+            <div className="min-h-4 text-xs text-muted-foreground">
+              {!kiraatGizli && (
+                <>
+                  {t("sayfa")} {talebe.sayfa} · {cuzHesapla(talebe.sayfa)}
+                  {t("cuzTam")}
+                </>
+              )}
+            </div>
           </div>
-          {hocaModu && talebe.fotoUrl && (
+          {hocaModu && (
             <Button
               size="sm"
               variant="ghost"
-              className="text-xs text-muted-foreground"
+              disabled={!talebe.fotoUrl}
+              className="text-xs text-muted-foreground disabled:opacity-40"
               onClick={() => onFotoDegistir(talebe, "")}
             >
               {t("fotoKaldir")}
             </Button>
           )}
-          {hata && <p className="text-xs text-destructive">{hata}</p>}
+          <p className="min-h-4 text-xs text-destructive">{hata ?? ""}</p>
         </div>
+
 
         <div className="mt-2 space-y-3">
           <div className="space-y-1.5">
