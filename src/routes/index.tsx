@@ -1305,7 +1305,7 @@ function ProfilDiyalog({
   onFotoDegistir: (t: Talebe, fotoUrl: string) => void;
   onNotKaydet: (
     t: Talebe,
-    patch: Partial<Pick<Talebe, "telefon" | "notlar">>,
+    patch: Partial<Pick<Talebe, "telefon" | "notlar" | "isim">>,
   ) => void;
   onSil: () => void;
 }) {
@@ -1315,12 +1315,16 @@ function ProfilDiyalog({
   const [telefon, setTelefon] = useState("");
   const [notlar, setNotlar] = useState("");
   const [fotoBuyuk, setFotoBuyuk] = useState(false);
+  const [isimDuzenle, setIsimDuzenle] = useState(false);
+  const [isimTaslak, setIsimTaslak] = useState("");
 
   useEffect(() => {
     if (talebe) {
       setTelefon(talebe.telefon ?? "");
       setNotlar(talebe.notlar ?? "");
       setHata(null);
+      setIsimDuzenle(false);
+      setIsimTaslak(talebe.isim);
     }
   }, [talebe?.id]);
 
