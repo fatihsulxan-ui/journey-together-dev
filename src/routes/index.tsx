@@ -113,6 +113,7 @@ const SOZLUK = {
     hocaefendiGirisi: "Hocaefendi Girişi",
     cikisYap: "Çıkış",
     duzenleme: "Düzenleme modu",
+    duzenle: "Düzenle",
     parola: "Parola",
     ayarlar: "Ayarlar",
     ayarlarAciklama: "Uygulama ayarlarını buradan yönetebilirsiniz.",
@@ -1305,7 +1306,7 @@ function ProfilDiyalog({
   onFotoDegistir: (t: Talebe, fotoUrl: string) => void;
   onNotKaydet: (
     t: Talebe,
-    patch: Partial<Pick<Talebe, "telefon" | "notlar">>,
+    patch: Partial<Pick<Talebe, "telefon" | "notlar" | "isim">>,
   ) => void;
   onSil: () => void;
 }) {
@@ -1315,12 +1316,16 @@ function ProfilDiyalog({
   const [telefon, setTelefon] = useState("");
   const [notlar, setNotlar] = useState("");
   const [fotoBuyuk, setFotoBuyuk] = useState(false);
+  const [isimDuzenle, setIsimDuzenle] = useState(false);
+  const [isimTaslak, setIsimTaslak] = useState("");
 
   useEffect(() => {
     if (talebe) {
       setTelefon(talebe.telefon ?? "");
       setNotlar(talebe.notlar ?? "");
       setHata(null);
+      setIsimDuzenle(false);
+      setIsimTaslak(talebe.isim);
     }
   }, [talebe?.id]);
 
@@ -1397,7 +1402,73 @@ function ProfilDiyalog({
             )}
           </div>
           <div className="text-center">
-            <div className="text-lg font-semibold">{talebe.isim}</div>
+            {isimDuzenle && hocaModu ? (
+              <div className="flex items-center justify-center gap-1.5">
+                <Input
+                  value={isimTaslak}
+                  onChange={(e) => setIsimTaslak(e.target.value.slice(0, 60))}
+                  className="h-9 w-48 text-center text-base font-semibold"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const yeni = isimTaslak.trim();
+                      if (yeni && yeni !== talebe.isim) {
+                        onNotKaydet(talebe, { isim: yeni });
+                      }
+                      setIsimDuzenle(false);
+                    }
+                    if (e.key === "Escape") {
+                      setIsimTaslak(talebe.isim);
+                      setIsimDuzenle(false);
+                    }
+                  }}
+                />
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 text-primary"
+                  disabled={!isimTaslak.trim()}
+                  onClick={() => {
+                    const yeni = isimTaslak.trim();
+                    if (yeni && yeni !== talebe.isim) {
+                      onNotKaydet(talebe, { isim: yeni });
+                    }
+                    setIsimDuzenle(false);
+                  }}
+                >
+                  <Check className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 text-muted-foreground"
+                  onClick={() => {
+                    setIsimTaslak(talebe.isim);
+                    setIsimDuzenle(false);
+                  }}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-1.5">
+                <div className="text-lg font-semibold">{talebe.isim}</div>
+                {hocaModu && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                    title={t("duzenle")}
+                    onClick={() => {
+                      setIsimTaslak(talebe.isim);
+                      setIsimDuzenle(true);
+                    }}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                )}
+              </div>
+            )}
             <div className="min-h-4 text-xs text-muted-foreground">
               {!kiraatGizli && (
                 <>
